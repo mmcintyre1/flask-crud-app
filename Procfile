@@ -1,1 +1,1 @@
-web: gunicorn silently-failing:app
+web: gunicorn silentlyfailing:app
