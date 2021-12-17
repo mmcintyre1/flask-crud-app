@@ -4,12 +4,17 @@ FROM python:3.8-slim-buster
 
 ENV FLASK_APP=silently-failing
 
+# prevents python from generating a .pyc file
+ENV PYTHONDONTWRITEBYTECODE 1
+# prevents python from buffering stdout and stderr
+ENV PYTHONUNBUFFERED 1
+
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 WORKDIR /app
 COPY . .
 
-EXPOSE 8050
+EXPOSE 5000
 
-ENTRYPOINT ["gunicorn", "silently-failing:app", "-w 2", "-b 0.0.0.0:8050", "--reload"]
+CMD ["python3", "manage.py"]

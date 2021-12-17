@@ -4,6 +4,9 @@ services:
     build:
       context: .
     ports:
-      - 8050:8050
+      - 5000:5000
+    command: python manage.py run -h 0.0.0.0
+    env_file:
+      - ./.env.dev
     volumes:
       - .:/app
