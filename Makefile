@@ -1,14 +1,11 @@
 
-app_name = ${FLASK_APP}
+app_name = silentlyfailing
 
 build:
 	docker build -t $(app_name) .
 
-run-dev:
+server:
 	docker-compose -f docker-compose-dev.yml up --build
-
-run-live:
-	docker-compose -f docker-compose-live.yml up -d --build
 
 kill:
 	docker stop $(app_name)
