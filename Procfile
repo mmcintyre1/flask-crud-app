@@ -1,1 +1,1 @@
-web: gunicorn silentlyfailing:app
+web: gunicorn "silentlyfailing:create_app()"
