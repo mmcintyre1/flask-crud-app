@@ -11,3 +11,12 @@ services:
       - ./.env.dev
     volumes:
       - .:/app
+
+  # portainer:
+  #   image: portainer/portainer-ce
+  #   container_name: portainer
+  #   restart: always
+  #   ports:
+  #     - "${PORTAINER_PORT}:9000"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
