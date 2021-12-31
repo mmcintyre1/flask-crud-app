@@ -2,7 +2,7 @@
 
 FROM python:3.8-slim-buster
 
-ENV FLASK_APP=silently-failing
+ENV FLASK_APP=${FLASK_APP}
 
 # prevents python from generating a .pyc file
 ENV PYTHONDONTWRITEBYTECODE 1

@@ -1,11 +1,13 @@
+include .env.dev
+export
 
-app_name = silentlyfailing
+app_name = ${FLASK_APP}
 
 build:
 	docker build -t $(app_name) .
 
 server:
-	docker-compose -f docker-compose-dev.yml up --build
+	docker-compose -f docker-compose-dev.yml up -d
 
 kill:
 	docker stop $(app_name)
