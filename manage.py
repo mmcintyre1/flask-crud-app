@@ -1,10 +1,10 @@
 
 from flask.cli import FlaskGroup
 
-from silentlyfailing import app
+from silentlyfailing import create_app
 
 
-cli = FlaskGroup(app)
+cli = FlaskGroup(create_app())
 
 
 if __name__ == "__main__":
