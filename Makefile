@@ -10,6 +10,6 @@ server:
 	docker-compose -f docker-compose-dev.yml up -d
 
 kill:
-	docker stop $(app_name)
+	docker stop $(app_name) $(app_name)_db
 	docker container prune -f
-	docker rmi -f $(app_name)
+	docker rmi -f $(app_name) $(app_name)_db
