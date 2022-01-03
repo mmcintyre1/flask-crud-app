@@ -11,6 +11,19 @@ services:
       - ./.env.dev
     volumes:
       - .:/app
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    container_name: ${FLASK_APP}_db
+    env_file:
+      - ./.env.dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
 
   # portainer:
   #   image: portainer/portainer-ce
@@ -20,3 +33,6 @@ services:
   #     - "${PORTAINER_PORT}:9000"
   #   volumes:
   #     - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  db:
