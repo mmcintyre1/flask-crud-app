@@ -8,7 +8,9 @@ class Config(object):
 
 class ProductionConfig(Config):
     # if running on heroku, we use the database_url from the environment
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    # need to hack the heroku database_url to work with sqlalchemy
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        'DATABASE_URL').replace("://", "ql://", 1)
 
 
 class DevelopmentConfig(Config):
