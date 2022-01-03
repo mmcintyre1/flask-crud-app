@@ -15,10 +15,11 @@ class DevelopmentConfig(Config):
     DEBUG = True
 
     # running locally via docker requires a POSTGRES_PASSWORD env variable
-    user = os.environ['POSTGRES_USER']
-    password = os.environ['POSTGRES_PASSWORD']
-    database = os.environ['POSTGRES_NAME']
-    host = os.environ['POSTGRES_HOST']
-    port = os.environ['POSTGRES_PORT']
+    # these need to have default values for when class is called
+    user = os.getenv('POSTGRES_USER', 'postgres')
+    password = os.getenv('POSTGRES_PASSWORD', 'postgres')
+    database = os.getenv('POSTGRES_NAME', 'postgres')
+    host = os.getenv('POSTGRES_HOST', 'localhost')
+    port = os.getenv('POSTGRES_PORT', '5432')
 
     SQLALCHEMY_DATABASE_URI = f'postgresql://{user}:{password}@{host}:{port}/{database}'
