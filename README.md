@@ -6,4 +6,4 @@ Run `make build` to build the image.
 
 Run `make server` to run a server locally. It should update as you modify the code.
 
-Run `make kill` to kill off the docker image.
+Run `make kill` to kill off the web and db container.
