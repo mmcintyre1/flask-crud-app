@@ -1,32 +1,24 @@
 
 from flask import Flask
-import os
+
+from .models import db
 
 
-def create_app(test_config=None):
-    # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY=os.getenv('SECRET_KEY', 'dev'),
-        DATABASE=os.path.join(app.instance_path, 'silentlyfailing.sqlite'),
-    )
+def create_app():
+    app = Flask(__name__)
 
-    # useful to pass in a test config for individual tests
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
+    if app.config["ENV"] == "production":
+        app.config.from_object("config.ProductionConfig")
     else:
-        # load the test config if passed in
-        app.config.from_mapping(test_config)
+        app.config.from_object("config.DevelopmentConfig")
 
-    # ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+    app.app_context().push()
 
-    @app.route('/')
-    @app.route('/index')
+    db.init_app(app)
+    db.create_all()
+
+    @ app.route('/')
+    @ app.route('/index')
     def index():
         return 'Hello, World!'
 
