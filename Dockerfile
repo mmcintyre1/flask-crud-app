@@ -21,7 +21,5 @@ COPY . .
 
 # gunicorn
 EXPOSE 5000
-# database
-EXPOSE 5432
 
 CMD ["python3", "manage.py"]
