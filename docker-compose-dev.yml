@@ -1,38 +1,50 @@
-version: "3.8"
+version: "2.1"
 services:
+  base:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env.dev
+    command: "false"
+
   web:
-    build:
-      context: .
+    extends:
+      service: base
     ports:
       - 5000:5000
     command: python manage.py run -h 0.0.0.0
     container_name: ${FLASK_APP}
-    env_file:
-      - ./.env.dev
-    volumes:
-      - .:/app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: postgres:14.1-alpine
+    container_name: postgres
     restart: always
-    container_name: ${FLASK_APP}_db
-    env_file:
-      - ./.env.dev
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_HOST=postgres
     ports:
       - "5432:5432"
-    volumes:
-      - db:/var/lib/postgresql/data
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  # portainer:
-  #   image: portainer/portainer-ce
-  #   container_name: portainer
-  #   restart: always
-  #   ports:
-  #     - "${PORTAINER_PORT}:9000"
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
+  migrations:
+    extends:
+      service: base
+    command: python manage.py db upgrade
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   db:
