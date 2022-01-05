@@ -1,1 +1,1 @@
-web: gunicorn "silentlyfailing:create_app()"
+web: flask db upgrade; gunicorn "silentlyfailing:create_app()"
