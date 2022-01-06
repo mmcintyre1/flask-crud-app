@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn "silentlyfailing:create_app()"
+web: make live-server
