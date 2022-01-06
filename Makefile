@@ -9,7 +9,8 @@ dev-server:
 	docker-compose -f docker-compose-dev.yml up -d
 
 live-server:
-	flask db upgrade; gunicorn "silentlyfailing:create_app()"
+	flask db upgrade
+	gunicorn "silentlyfailing:create_app()"
 
 kill:
 	docker stop $(app_name) postgres
