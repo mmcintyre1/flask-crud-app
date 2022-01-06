@@ -1,5 +1,7 @@
 app_name = silentlyfailing
 
+export FLASK_APP = $(app_name)
+
 # --no-cache needs to be called if requirements.txt is updated
 # otherwise it ignores new additions
 build:
