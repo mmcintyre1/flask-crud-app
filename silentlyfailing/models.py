@@ -29,24 +29,37 @@ class Post(db.Model):
     __tablename__ = 'post'
 
     id = db.Column(db.Integer, primary_key=True)
-    subject = db.Column(db.String)
-    content = db.Column(db.String)
+    title = db.Column(db.String)
+    body = db.Column(db.String)
     time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    author = db.Column(db.String)
+    author = db.Column(db.String, default="Me")
 
     def __repr__(self):
-        return '<Post %r>' % (self.subject)
+        return f'<Post {self.title}>'
 
     # We added this serialize function to be able to send JSON objects in a
     # serializable format
     @property
     def serialize(self):
         return {
-            'subject': self.subject,
-            'content': self.content,
+            'title': self.title,
+            'body': self.body,
             'author': self.author,
             'time': self.time,
         }
+
+    def save_post(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update_post(self, title, body):
+        self.title = title
+        self.body = body
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 
 def setup_admin_user(db):
