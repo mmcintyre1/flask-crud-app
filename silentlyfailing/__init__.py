@@ -17,10 +17,8 @@ def create_app():
         # register blueprints
         app.register_blueprint(sf)
 
-        # initialize plugins
-        db.init_app(app)
-        migrate.init_app(app, db)
-        login_manager.init_app(app)
+        # initialize extensions
+        extensions(app)
 
         # setup database
         db.create_all()
@@ -29,3 +27,9 @@ def create_app():
         setup_admin_user(db)
 
     return app
+
+
+def extensions(app):
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
