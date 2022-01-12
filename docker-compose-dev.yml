@@ -15,6 +15,7 @@ services:
       - 5000:5000
     command: python manage.py run -h 0.0.0.0
     container_name: ${FLASK_APP}
+    restart: "no"
     depends_on:
       db:
         condition: service_healthy
@@ -22,7 +23,7 @@ services:
   db:
     image: postgres:14.1-alpine
     container_name: postgres
-    restart: always
+    restart: "no"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
