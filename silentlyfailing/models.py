@@ -31,21 +31,21 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
     body = db.Column(db.String)
-    time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    author = db.Column(db.String, default="Me")
+    created_date = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    last_updated = db.Column(db.DateTime, default=datetime.now)
+    author = db.Column(db.String)
 
     def __repr__(self):
         return f'<Post {self.title}>'
 
-    # We added this serialize function to be able to send JSON objects in a
-    # serializable format
     @property
     def serialize(self):
         return {
             'title': self.title,
             'body': self.body,
+            'created_date': self.created_date,
+            'last_updated': self.last_updated,
             'author': self.author,
-            'time': self.time,
         }
 
     def save_post(self):
@@ -55,6 +55,7 @@ class Post(db.Model):
     def update_post(self, title, body):
         self.title = title
         self.body = body
+        self.last_updated = datetime.now()
         db.session.commit()
 
     def delete(self):
