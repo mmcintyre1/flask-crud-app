@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, Response, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, redirect, render_template, request, url_for
 )
 from flask_login import login_required, login_user, logout_user, LoginManager, current_user
 
@@ -39,7 +39,7 @@ def login():
             login_user(user)
             flash('Logged in successfully.')
             next_page = request.args.get('next')
-            return redirect(next_page or url_for('sf.index'))
+            return redirect(next_page or url_for('sf.detail'))
 
         flash('Invalid username/password combination')
 
@@ -67,6 +67,7 @@ def create():
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
+        author = request.form['author']
         error = None
 
         if not title:
@@ -75,7 +76,7 @@ def create():
         if error is not None:
             flash(error)
         else:
-            post = Post(title=title, body=body)
+            post = Post(title=title, body=body, author=author)
             post.save_post()
             return redirect(url_for('sf.detail'))
 
