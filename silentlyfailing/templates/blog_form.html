@@ -1,0 +1,38 @@
+<div class=container"><br>
+  <div class="row align-items-center justify-content-center">
+    <div class="col-md-4">
+      <form action='' method="post" role="form">
+        <div class="form-group">
+
+          <label for="title">Title:</label>
+          <input type="text" class="form-control" id="title" name="title" placeholder="Title"
+            value="{{ request.form['title'] or post.title }}">
+          </input>
+          <br>
+
+          <label for="body">Body:</label>
+          <textarea class="form-control" id="body" name="body" placeholder="Article Contents"
+            rows="10">{{ request.form['body'] or post.body }}</textarea>
+          <br>
+
+          <label for="email">Author:</label>
+          <input type="text" class="form-control" id="author" name="author" placeholder="Author"
+            value="{{ request.form['author'] or post.author }}">
+          </input>
+
+          <br>
+        </div>
+
+        <br>
+
+        <center>
+          <button type="submit" class="btn btn-primary btn-lg">
+            Submit
+          </button>
+        </center>
+
+      </form>
+
+    </div>
+  </div>
+</div>
