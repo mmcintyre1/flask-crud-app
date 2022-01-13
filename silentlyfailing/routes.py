@@ -1,13 +1,14 @@
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for
 )
-from flask_login import login_required, login_user, logout_user, LoginManager, current_user
+from flask_login import login_required, login_user, logout_user, current_user
 
 from .models import User, Post
 from .forms import LoginForm
+from silentlyfailing import login_manager
+
 
 sf = Blueprint('sf', __name__)
-login_manager = LoginManager()
 
 
 @login_manager.user_loader
