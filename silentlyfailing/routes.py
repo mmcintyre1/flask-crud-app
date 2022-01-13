@@ -29,7 +29,6 @@ def unauthorized():
 @sf.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        print('hello')
         return redirect(url_for('sf.index'))
 
     form = LoginForm()
@@ -40,7 +39,7 @@ def login():
             login_user(user)
             flash('Logged in successfully.')
             next_page = request.args.get('next')
-            return redirect(next_page or url_for('sf.detail'))
+            return redirect(next_page or url_for('sf.index'))
 
         flash('Invalid username/password combination')
 
@@ -56,15 +55,16 @@ def logout():
     return redirect('sf.login')
 
 
-@sf.route('/detail')
-def detail():
+@sf.route('/')
+@sf.route("/index")
+def index():
     posts = Post.query.all()
-    return render_template('detail.html', posts=posts)
+    return render_template('index.html', posts=posts)
 
 
-@sf.route('/create', methods=['GET', 'POST'])
+@sf.route('/create-post', methods=['GET', 'POST'])
 @login_required
-def create():
+def create_post():
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
@@ -79,14 +79,14 @@ def create():
         else:
             post = Post(title=title, body=body, author=author)
             post.save_post()
-            return redirect(url_for('sf.detail'))
+            return redirect(url_for('sf.index'))
 
-    return render_template('create.html')
+    return render_template('create_post.html')
 
 
-@sf.route('/<int:id>/update', methods=('GET', 'POST'))
+@sf.route('/<int:id>/update-post', methods=('GET', 'POST'))
 @login_required
-def update(id):
+def update_post(id):
     post = get_post(id)
 
     if request.method == 'POST':
@@ -101,17 +101,17 @@ def update(id):
             flash(error)
         else:
             post.update_post(title, body)
-            return redirect(url_for('sf.detail'))
+            return redirect(url_for('sf.index'))
 
-    return render_template('update.html', post=post)
+    return render_template('update_post.html', post=post)
 
 
-@sf.route('/<int:id>/delete', methods=('POST',))
+@sf.route('/<int:id>/delete-post', methods=('POST',))
 @login_required
-def delete(id):
+def delete_post(id):
     post = get_post(id)
     post.delete()
-    return redirect(url_for('sf.detail'))
+    return redirect(url_for('sf.index'))
 
 
 def get_post(id: int) -> Post:

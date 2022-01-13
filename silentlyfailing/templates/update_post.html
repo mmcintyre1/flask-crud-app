@@ -1,4 +1,4 @@
-{% extends 'create.html' %}
+{% extends 'base.html' %}
 {% block extra_head %}
 <div class="container"><br>
   <center>
@@ -8,10 +8,10 @@
 {% endblock %}
 
 {% block content %}
-{% include "blog_form.html" %}
+{% include "_post_form.html" %}
 
 <center>
-  <form action="{{ url_for('sf.delete', id=post['id']) }}" method="post">
+  <form action="{{ url_for('sf.delete_post', id=post['id']) }}" method="post">
     <input class="btn btn-danger btn-lg" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
   </form>
 </center>
