@@ -13,7 +13,7 @@ services:
       service: base
     ports:
       - 5000:5000
-    command: python manage.py run -h 0.0.0.0
+    command: gunicorn -b :5000 "silentlyfailing:create_app()"
     container_name: ${FLASK_APP}
     restart: "no"
     depends_on:
