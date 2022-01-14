@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
 
-{% block extra_head %}
+{% block content %}
+
 <div class="container"><br>
   <center>
     <h2>New Post</h2>
   </center>
 </div>
-{% endblock %}
-
-{% block content %}
 
 {% with post={} %}
 {% include "_post_form.html" %}
