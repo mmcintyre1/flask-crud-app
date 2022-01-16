@@ -13,7 +13,7 @@ services:
       service: base
     ports:
       - 5000:5000
-    command: gunicorn -b :5000 "silentlyfailing:create_app()"
+    command: flask run --host=0.0.0.0
     container_name: ${FLASK_APP}
     restart: "no"
     depends_on:
