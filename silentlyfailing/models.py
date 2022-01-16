@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask_login import UserMixin
 import os
+from slugify import slugify
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -27,6 +28,7 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
+    slug = db.Column(db.String(255))
     body = db.Column(db.String)
     created_date = db.Column(db.DateTime, nullable=False, default=datetime.now)
     last_updated = db.Column(db.DateTime, default=datetime.now)
@@ -44,6 +46,11 @@ class Post(db.Model):
             'last_updated': self.last_updated,
             'author': self.author,
         }
+
+    @staticmethod
+    def slugify(target, value, oldvalue, initiator):
+        if value and (not target.slug or value != oldvalue):
+            target.slug = slugify(value)
 
     def save_post(self):
         db.session.add(self)
@@ -69,3 +76,6 @@ def setup_admin_user(db):
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
+
+
+db.event.listen(Post.title, 'set', Post.slugify, retval=False)

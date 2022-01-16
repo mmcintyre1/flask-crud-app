@@ -37,7 +37,6 @@ def login():
 
         if user and user.check_password(password=form.password.data):
             login_user(user)
-            flash('Logged in successfully.')
             next_page = request.args.get('next')
             return redirect(next_page or url_for('sf.index'))
 
@@ -52,7 +51,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect('sf.login')
+    return redirect(url_for('sf.index'))
 
 
 @sf.route('/')
@@ -84,10 +83,10 @@ def create_post():
     return render_template('create_post.html')
 
 
-@sf.route('/<int:id>/update-post', methods=('GET', 'POST'))
+@sf.route('/<slug>/update-post', methods=('GET', 'POST'))
 @login_required
-def update_post(id):
-    post = get_post(id)
+def update_post(slug):
+    post = get_post(slug)
 
     if request.method == 'POST':
         title = request.form['title']
@@ -106,13 +105,18 @@ def update_post(id):
     return render_template('update_post.html', post=post)
 
 
-@sf.route('/<int:id>/delete-post', methods=('POST',))
+@sf.route('/<slug>/delete-post', methods=('POST',))
 @login_required
-def delete_post(id):
-    post = get_post(id)
+def delete_post(slug):
+    post = get_post(slug)
     post.delete()
     return redirect(url_for('sf.index'))
 
 
-def get_post(id: int) -> Post:
-    return Post.query.get_or_404(id)
+@sf.route("/<slug>")
+def post_detail(post):
+    return render_template('post_detail.html', post=post)
+
+
+def get_post(slug: str) -> Post:
+    return Post.query.filter_by(slug=slug).first()
