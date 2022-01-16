@@ -5,14 +5,20 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link active" href="{{ url_for('sf.index') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+      </ul>
+    </div>
+
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+      <ul class="navbar-nav ms-auto">
         {% if current_user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('sf.create_post') }}">Create Post</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('sf.logout') }}">Logout</a></li>
         {% else %}
         <li class="nav-item"><a class="nav-link" href="{{ url_for('sf.login') }}">Login</a></li>
         {% endif %}
-        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
       </ul>
     </div>
+
   </div>
 </nav>
