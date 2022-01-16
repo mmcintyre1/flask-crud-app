@@ -87,7 +87,6 @@ def create_post():
 @login_required
 def update_post(slug):
     post = get_post(slug)
-
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
@@ -114,7 +113,8 @@ def delete_post(slug):
 
 
 @sf.route("/<slug>")
-def post_detail(post):
+def post_detail(slug):
+    post = get_post(slug)
     return render_template('post_detail.html', post=post)
 
 
