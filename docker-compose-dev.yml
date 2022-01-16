@@ -41,7 +41,12 @@ services:
   migrations:
     extends:
       service: base
-    command: python manage.py db upgrade
+    command:
+      - /bin/bash
+      - -c
+      - |
+        flask db migrate
+        flask db upgrade
     depends_on:
       db:
         condition: service_healthy
