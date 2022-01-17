@@ -7,11 +7,17 @@ export FLASK_APP = $(app_name)
 build:
 	docker build -t $(app_name) . --no-cache
 
+# creates migrations, but needs the database to be created and running first
+migrate:
+	. venv/bin/activate
+	flask db migrate
+
 dev-server:
 	docker-compose -f docker-compose-dev.yml up -d
 
 live-server:
 	flask db upgrade
+	flask setup-admin
 	gunicorn "silentlyfailing:create_app()"
 
 kill:
