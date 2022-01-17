@@ -22,4 +22,4 @@ COPY . .
 # gunicorn
 EXPOSE 5000
 
-CMD ["python3", "manage.py"]
+ENTRYPOINT ["sh", "./entrypoint.sh"]

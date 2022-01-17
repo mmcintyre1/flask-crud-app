@@ -1,19 +1,15 @@
 version: "3.8"
 services:
-  base:
+  web:
     build: .
     volumes:
       - .:/app
     env_file:
       - .env.dev
-    command: "false"
-
-  web:
-    extends:
-      service: base
+    environment:
+      - DEBUG=1
     ports:
       - 5000:5000
-    command: flask run --host=0.0.0.0
     container_name: ${FLASK_APP}
     restart: "no"
     depends_on:
@@ -37,19 +33,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-
-  migrations:
-    extends:
-      service: base
-    command:
-      - /bin/bash
-      - -c
-      - |
-        flask db migrate
-        flask db upgrade
-    depends_on:
-      db:
-        condition: service_healthy
 
 volumes:
   db:
