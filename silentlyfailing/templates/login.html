@@ -22,8 +22,8 @@
           </ul>
           {% endif %}
 
-          {{ form.username(class='form-control my-2', placeholder='admin password') }}
-          {% if form.username.errors %}
+          {{ form.password(class='form-control my-2', placeholder='admin password') }}
+          {% if form.password.errors %}
           <ul class="errors">
             {% for error in form.password.errors %}
             <li>{{ error }}</li>
