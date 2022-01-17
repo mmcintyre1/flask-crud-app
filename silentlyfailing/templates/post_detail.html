@@ -2,9 +2,13 @@
 
 {% block content %}
 <div class="container">
-  <br>
-  <center>
-    {{ post.serialize }}
-  </center>
+  <table class="table table-hover">
+    <tr>
+      <td>
+        <br>
+        {{ post.body | safe }}
+      </td>
+    </tr>
+  </table>
 </div>
 {% endblock %}
