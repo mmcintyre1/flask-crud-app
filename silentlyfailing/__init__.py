@@ -1,4 +1,5 @@
 
+from distutils.core import setup
 from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -21,18 +22,17 @@ def create_app():
     else:
         app.config.from_object("config.DevelopmentConfig")
 
+    # register blueprints
     from .routes import sf
     app.register_blueprint(sf)
+    from .commands import setup_admin
+    app.cli.add_command(setup_admin)
 
     with app.app_context():
         # initialize extensions
-        from silentlyfailing import models
         db.init_app(app)
         migrate.init_app(app, db)
         login_manager.init_app(app)
         ckeditor.init_app(app)
-
-        # setup admin user
-        models.setup_admin_user(db)
 
     return app
