@@ -2,34 +2,45 @@
   <div class="row align-items-center justify-content-center">
     <div class="col-md-4">
       <form action='' method="post" role="form">
+        {{ form.csrf_token }}
         <div class="form-group">
 
           <label for="title">Title:</label>
-          <input type="text" class="form-control" id="title" name="title" placeholder="Title"
-            value="{{ request.form['title'] or post.title }}">
-          </input>
-          <br>
+          {{ form.title(class='form-control', value=request.form['title'] or post.title) }}
+          {% if form.title.errors %}
+          <ul class="errors">
+            {% for error in form.title.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
 
           <label for="body">Body:</label>
-          <textarea class="form-control" id="body" name="body" placeholder="Article Contents"
-            rows="10">{{ request.form['body'] or post.body }}</textarea>
-          <br>
+          {{ ckeditor.create(value=request.form['body'] or post.body, name='body') }}
+          {{ ckeditor.load() }}
+          {% if form.body.errors %}
+          <ul class="errors">
+            {% for error in form.body.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
 
-          <label for="email">Author:</label>
-          <input type="text" class="form-control" id="author" name="author" placeholder="Author"
-            value="{{ request.form['author'] or post.author }}">
-          </input>
+          <label for="body">Author:</label>
+          {{ form.author(class='form-control', value=request.form['author'] or post.author) }}
+          {% if form.author.errors %}
+          <ul class="errors">
+            {% for error in form.author.errors %}
+            <li>{{ error }}</li>{% endfor %}
+          </ul>
+          {% endif %}
 
-          <br>
+          <center>
+            {{ form.submit(class='btn btn-primary btn-lg mt-2') }}
+          </center>
+
+
         </div>
-
-        <br>
-
-        <center>
-          <button type="submit" class="btn btn-primary btn-lg">
-            Submit
-          </button>
-        </center>
 
       </form>
 

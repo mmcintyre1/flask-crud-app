@@ -52,11 +52,11 @@ class Post(db.Model):
         if value and (not target.slug or value != oldvalue):
             target.slug = slugify(value)
 
-    def save_post(self):
+    def save(self):
         db.session.add(self)
         db.session.commit()
 
-    def update_post(self, title, body):
+    def update(self, title, body):
         self.title = title
         self.body = body
         self.last_updated = datetime.now()

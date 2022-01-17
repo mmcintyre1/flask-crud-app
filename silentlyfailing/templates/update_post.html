@@ -8,7 +8,9 @@
   </center>
 </div>
 
+{% with form=form %}
 {% include "_post_form.html" %}
+{% endwith %}
 
 <center>
   <form action="{{ url_for('sf.delete_post', slug=post['slug']) }}" method="post">

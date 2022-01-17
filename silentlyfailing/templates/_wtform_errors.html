@@ -1,0 +1,3 @@
+{% for field, error in form.errors.items() %}
+<div class="alert alert-error">{{field}} - {{" ".join(error)}}</div>
+{% endfor %}

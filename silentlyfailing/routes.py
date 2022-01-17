@@ -4,7 +4,7 @@ from flask import (
 from flask_login import login_required, login_user, logout_user, current_user
 
 from .models import User, Post
-from .forms import LoginForm
+from .forms import LoginForm, PostForm
 from silentlyfailing import login_manager
 
 
@@ -64,44 +64,34 @@ def index():
 @sf.route('/create-post', methods=['GET', 'POST'])
 @login_required
 def create_post():
+    form = PostForm()
+
     if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
-        author = request.form['author']
-        error = None
-
-        if not title:
-            error = 'Title is required.'
-
-        if error is not None:
-            flash(error)
-        else:
-            post = Post(title=title, body=body, author=author)
-            post.save_post()
+        if form.validate_on_submit():
+            print(form)
+            post = Post(title=form.title.data,
+                        body=form.body.data.strip(),
+                        author=form.author.data)
+            post.save()
             return redirect(url_for('sf.index'))
 
-    return render_template('create_post.html')
+    return render_template('create_post.html', form=form)
 
 
 @sf.route('/<slug>/update-post', methods=('GET', 'POST'))
 @login_required
 def update_post(slug):
     post = get_post(slug)
+    form = PostForm()
+
     if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
-        error = None
-
-        if not title:
-            error = 'Title is required.'
-
-        if error is not None:
-            flash(error)
-        else:
-            post.update_post(title, body)
+        if form.validate_on_submit():
+            title = form.title.data
+            body = form.body.data.strip()
+            post.update(title, body)
             return redirect(url_for('sf.index'))
 
-    return render_template('update_post.html', post=post)
+    return render_template('update_post.html', form=form, post=post)
 
 
 @sf.route('/<slug>/delete-post', methods=('POST',))
