@@ -1,36 +1,28 @@
 {% extends 'base.html' %}
-
 {% block content %}
 {% for post in posts %}
-<article class="post">
-  <header>
-    <div>
-      <h1>
-        <a href="{{ url_for('sf.post_detail', slug=post['slug']) }}">
-          {{ post['title'] }}
-        </a>
-      </h1>
-      <div class="about">by {{ post['author'] }} on {{ post['created_date'].strftime('%Y-%m-%d') }}</div>
-    </div>
-
+<div class="card mt-5">
+  <div class="card-body">
+    <h5 class="card-title">{{ post['title'] }}</h5>
+    <p class="card-text">
+    <p class="body">{{ post['body'] | safe | truncate(256, True)}}</p>
+    </p>
+    <p class="card-text">by {{ post['author'] }} on {{ post['created_date'].strftime('%Y-%m-%d') }}</p>
+    <a href="{{ url_for('sf.post_detail', slug=post['slug']) }}" class="btn btn-primary">Read More</a>
     {% if current_user.is_authenticated %}
-    <div class="container">
-      <div class="btn-group">
-        <form action="{{ url_for('sf.update_post', slug=post['slug']) }}" method="get">
-          <input class="btn btn-primary btn-lg" type="submit" value="Edit">
-        </form>
-        <form action="{{ url_for('sf.delete_post', slug=post['slug']) }}" method="post">
-          <input class="btn btn-danger btn-lg" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
-        </form>
-      </div>
+
+    <div class="btn-group mt-2">
+      <form action="{{ url_for('sf.update_post', slug=post['slug']) }}" method="get">
+        <input class="btn btn-primary btn-lg" type="submit" value="Edit">
+      </form>
+      <form action="{{ url_for('sf.delete_post', slug=post['slug']) }}" method="post">
+        <input class="btn btn-danger btn-lg" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+      </form>
     </div>
     {% endif %}
 
-  </header>
-  <p class="body">{{ post['body'] | truncate(256, True)}}</p>
-</article>
-{% if not loop.last %}
-<hr>
-{% endif %}
+  </div>
+</div>
 {% endfor %}
+
 {% endblock %}
